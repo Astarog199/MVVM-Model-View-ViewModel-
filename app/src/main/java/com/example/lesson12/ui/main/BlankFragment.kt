@@ -21,6 +21,10 @@ class BlankFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: MainViewModel by viewModels{MainViewModelFactory()}
 
+    companion object{
+        fun newInstance() = BlankFragment()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,8 +32,6 @@ class BlankFragment : Fragment() {
         _binding = FragmentBlankBinding.inflate(inflater, container, false)
         return binding.root
     }
-
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

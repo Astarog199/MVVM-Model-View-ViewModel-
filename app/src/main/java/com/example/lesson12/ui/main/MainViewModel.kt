@@ -12,10 +12,11 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "MaimViewModel"
 
+
 class MainViewModel(private val repository: MainRepository):ViewModel() {
 
     // присваиваем дефолтное состояние
-    private val _state = MutableStateFlow<MyState>(MyState.Success)
+    private val _state: MutableStateFlow<MyState> = MutableStateFlow(MyState.Success)
     val state = _state.asStateFlow() // отслеживает состояние из View
 
     private val _error = Channel<String>()
