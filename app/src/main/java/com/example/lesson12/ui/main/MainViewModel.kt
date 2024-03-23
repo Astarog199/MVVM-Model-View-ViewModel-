@@ -26,14 +26,22 @@ class MainViewModel(private val repository: MainRepository):ViewModel() {
         Log.d(TAG, "init: ${state.value}")
     }
 
-    fun onButtonClick(){
-        Log.d(TAG, "onButtonClick: ")
-    }
-
     override fun onCleared(){
         super.onCleared()
         Log.d(TAG, "onCleared: ")
     }
+
+    /**
+     * Метод onSignInClick, вызывается при нажатии кнопки.
+     * Метод проверяет, не пустые ли поля ввода (login и password),
+     * и если одно из них пустое, отправляет сообщение об ошибке.
+     *
+     * Если оба поля не пусты, устанавливает состояние Loading и пытается получить данные из репозитория.
+     *
+     * Если происходит исключение, устанавливает состояние Error и отправляет сообщение об ошибке.
+     *
+     * Если данные успешно получены, устанавливает состояние в MyState.Success.
+     */
 
     fun onSignInClick(login:String, password: String){
         viewModelScope.launch {

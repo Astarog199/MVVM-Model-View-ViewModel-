@@ -14,9 +14,13 @@ import com.example.lesson12.databinding.FragmentBlankBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
+/**
+ * Фрагмент BlankFragment использует LifecycleScope и repeatOnLifecycle для создания функций,
+ * Первая функция: изменяет видимость ProgressBar, устанавливает ошибки в полях ввода и включает или отключает кнопку.
+ * Вторая функция: функция собирает данные из свойства error и отображает их в виде Snackbar.
+ */
+
 class BlankFragment : Fragment() {
-
-
     private var _binding: FragmentBlankBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewModel by viewModels{MainViewModelFactory()}
@@ -35,13 +39,22 @@ class BlankFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//      Слушатель на кнопке, который при нажатии получает текст из полей ввода (login и password)
+//      и передает их в метод onSignInClick в ViewModel.
         binding.button.setOnClickListener {
             val login = binding.login.text.toString()
             val password =  binding.password.text.toString()
             viewModel.onSignInClick(login, password)
         }
-//        viewLifecycleOwner отвечает за жизненный цикл окна
-//        lifecycleScope для запуска CoroutineScope
+
+        /**
+         *  Эта функция собирает данные из свойства state в ViewModel и
+         *  в зависимости от значения state изменяет видимость ProgressBar,
+         *  устанавливает ошибки в полях ввода и включает или отключает кнопку.
+         *
+         *  viewLifecycleOwner отвечает за жизненный цикл окна
+         *  lifecycleScope для запуска CoroutineScope
+         */
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
@@ -64,13 +77,16 @@ class BlankFragment : Fragment() {
                             binding.progress.isVisible = false
                             binding.loginLayout.error = state.loginError
                             binding.passwordLayout.error = state.passwordError
-
                         }
                     }
                 }
             }
         }
 
+        /**
+         * Метод собирает данные из свойства error в ViewModel
+         * и отображает их в виде Snackbar.
+         */
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.error.collect { message ->

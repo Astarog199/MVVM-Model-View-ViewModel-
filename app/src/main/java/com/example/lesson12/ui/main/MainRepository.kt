@@ -4,9 +4,7 @@ import kotlinx.coroutines.delay
 import java.net.ConnectException
 
 class MainRepository {
-
     private var count = 0
-
     suspend fun getData(): String{
         delay(15000)
         return if (++count %2 ==0){
